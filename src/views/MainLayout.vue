@@ -132,15 +132,15 @@
           </el-menu-item>
 
           <!-- 预约管理 -->
-          <el-sub-menu index="reservation">
+          <el-sub-menu v-if="user.role !== 'admin' && user.role !== 'director'" index="reservation">
             <template #title>
               <el-icon><Calendar /></el-icon>
               <span>预约管理</span>
               <el-badge v-if="user.role === 'external'" value="付费" type="warning" style="margin-left: 8px;" />
             </template>
             
-            <!-- 预约申请（所有用户） -->
-            <el-menu-item index="/main/reservation/apply">
+            <!-- 预约申请（非管理员和负责人） -->
+            <el-menu-item v-if="user.role !== 'admin' && user.role !== 'director'" index="/main/reservation/apply">
               <template #title>
                 <span>预约申请</span>
                 <el-tag v-if="user.role === 'external'" size="small" type="danger" style="margin-left: 8px;">
@@ -149,8 +149,8 @@
               </template>
             </el-menu-item>
             
-            <!-- 我的预约（所有用户） -->
-            <el-menu-item index="/main/reservation/my">
+            <!-- 我的预约（非管理员和负责人） -->
+            <el-menu-item v-if="user.role !== 'admin' && user.role !== 'director'" index="/main/reservation/my">
               <el-icon><List /></el-icon>
               <template #title>我的预约</template>
             </el-menu-item>
@@ -159,18 +159,6 @@
             <el-menu-item v-if="user.role === 'external'" index="/main/reservation/payment">
               <el-icon><Money /></el-icon>
               <template #title>缴费管理</template>
-            </el-menu-item>
-            
-            <!-- 预约审批（管理员） -->
-            <el-menu-item v-if="isAdmin" index="/main/reservation/approval">
-              <el-icon><DocumentChecked /></el-icon>
-              <template #title>预约审批</template>
-            </el-menu-item>
-            
-            <!-- 校外人员审批（实验室负责人） -->
-            <el-menu-item v-if="user.role === 'director'" index="/main/reservation/external-approval">
-              <el-icon><Key /></el-icon>
-              <template #title>校外审批</template>
             </el-menu-item>
           </el-sub-menu>
 
@@ -214,8 +202,8 @@
             </el-sub-menu>
           </template>
 
-          <!-- 财务管理（排除学生角色） -->
-          <template v-if="user.role !== 'student'">
+          <!-- 财务管理（排除学生和教师角色） -->
+          <template v-if="user.role !== 'student' && user.role !== 'teacher'">
             <el-sub-menu index="financial">
               <template #title>
                 <el-icon><Money /></el-icon>

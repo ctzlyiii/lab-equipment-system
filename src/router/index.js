@@ -278,7 +278,7 @@ const routes = [
         meta: {
           title: '财务管理',
           icon: 'Money',
-          roles: ['director'] // 只有实验室负责人可见
+          roles: ['admin', 'director'] // 设备管理员和实验室负责人可见
         },
         children: [
           {
